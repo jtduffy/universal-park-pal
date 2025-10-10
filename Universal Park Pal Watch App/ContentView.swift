@@ -9,16 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                ForEach(Resort.allCases) { resort in
+                    NavigationLink(destination: ParkSelectionView(resort: resort)) {
+                        Text(resort.rawValue.capitalized)
+                            .font(.headline)
+                    }
+                }
+            }
+            .navigationTitle("Park Pal")
         }
-        .padding()
     }
 }
-
 #Preview {
     ContentView()
 }
