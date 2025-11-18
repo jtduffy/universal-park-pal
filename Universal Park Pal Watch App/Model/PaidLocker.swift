@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct PaidLocker {
+struct PaidLocker: Codable, Identifiable {
+    var id: String
     let description: String
     let location: Location
-    let entryType: EntryType
 }

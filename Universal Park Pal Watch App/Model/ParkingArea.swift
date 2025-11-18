@@ -7,7 +7,17 @@
 
 import Foundation
 
-struct ParkingArea {
-    let name: String
-    let entryType: EntryType
+struct ParkingArea: Codable, Identifiable, Hashable {
+    var id: String { section }
+    let section: String
+    let levels: [String]
+    let rows: [String]
+    
+    static func == (lhs: ParkingArea, rhs: ParkingArea) -> Bool {
+        lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }

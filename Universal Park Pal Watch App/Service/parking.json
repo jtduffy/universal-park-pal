@@ -1,0 +1,32 @@
+[
+    {
+        "id": "citywalk",
+        "areas": [
+            {
+                "section" : "Cat In The Hat",
+                "levels": ["1", "2", "3", "4", "5"],
+                "rows": ["07", "08", "09", "10", "11", "12"]
+            }
+        ]
+    },
+    {
+        "id": "hollywood",
+        "areas": [
+            {
+                "section" : "Curious George",
+                "levels": ["B2 - Grey", "B1 - Pink", "1 - Blue", "2 - Yellow", "3 - Red", "4 - Green", "5 - Brown"],
+                "rows": ["P", "Q", "R"]
+            }
+        ]
+    },
+        {
+        "id": "epic",
+        "areas": [
+            {
+                "section" : "Cat In The Hat",
+                "levels": ["1", "2", "3", "4", "5"],
+                "rows": ["07", "08", "09", "10", "11", "12"]
+            }
+        ]
+    }
+]

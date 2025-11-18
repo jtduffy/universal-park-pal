@@ -1,0 +1,119 @@
+[
+    {
+        "name": "Universal Studios Florida",
+        "imageName": "globe",
+        "lockers": [
+            {
+                "name": "Harry Potter and the Escape from Gringotts",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "4",
+                "lockers": 40
+            },
+            {
+                "name": "Men In Black Alien Attack!",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "11",
+                "lockers": 40
+            },
+                        {
+                "name": "Revenge of the Mummy",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "12",
+                "lockers": 40
+            }
+        ]
+    },
+    {
+        "name": "Islands of Adventure",
+        "imageName": "safari",
+        "lockers": [
+            {
+                "name": "Hagrid's Magical Creatures Motorbike Adventure",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "4",
+                "lockers": 40
+            },
+                        {
+                "name": "Harry Potter and the Forbidden Journey",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "5",
+                "lockers": 40
+            },
+                        {
+                "name": "Jurassic Park River Adventure",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "6",
+                "lockers": 12
+            },
+                        {
+                "name": "Jurassic World VelociCoaster",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "8",
+                "lockers": 40
+                },
+            {
+                "name": "The Incredible Hulk Coaster",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "5",
+                "lockers": 33
+            }
+        ]
+    },
+    {
+        "name": "Epic Universe",
+        "imageName": "moon.stars",
+        "lockers": [
+            {
+                "name": "Hiccup's Wing Gliders",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "8",
+                "lockers": 24
+            },
+            {
+                "name": "Monster's Unchained: The Frankenstein Experiment",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "6",
+                "lockers": 36
+            },
+            {
+                "name": "Stardust Racers",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "11",
+                "lockers": 36
+            }
+        ]
+    }
+]

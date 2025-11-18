@@ -7,9 +7,15 @@
 
 import Foundation
 
-struct Park {
+struct Park: Codable, Identifiable {
+    var id: String { name }
     let name: String
-    let rides: [Ride]
-    let parkingAreas: [ParkingArea]
-    let otherLockers: [PaidLocker]
+    let imageName: String
+    let lockers: [LockerLocation]
+    var parkingLot: ParkingLot?
+    //let otherLockers: [PaidLocker]
+    
+    enum CodingKeys: String, CodingKey {
+        case name, lockers, imageName
+    }
 }
