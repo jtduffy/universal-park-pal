@@ -13,7 +13,7 @@ struct Universal_Park_Pal_Watch_AppApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView().environmentObject(dataManager)
+            MainView().environmentObject(dataManager)
         }
     }
 }

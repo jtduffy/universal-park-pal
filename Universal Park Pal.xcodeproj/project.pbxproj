@@ -53,6 +53,7 @@
 		DB53B9C32E451C65002B53A5 /* Universal Park Pal Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Universal Park Pal Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB53B9D22E451C67002B53A5 /* Universal Park Pal Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Universal Park Pal Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB53B9DC2E451C67002B53A5 /* Universal Park Pal Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Universal Park Pal Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DBD4460E2EFC64B700F011A5 /* mapstogpx20251224_181039.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = mapstogpx20251224_181039.gpx; path = ../../Downloads/mapstogpx20251224_181039.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -101,6 +102,7 @@
 		DB53B9B62E451C65002B53A5 = {
 			isa = PBXGroup;
 			children = (
+				DBD4460E2EFC64B700F011A5 /* mapstogpx20251224_181039.gpx */,
 				DB53B9C72E451C65002B53A5 /* Universal Park Pal Watch App */,
 				DB53B9D52E451C67002B53A5 /* Universal Park Pal Watch AppTests */,
 				DB53B9DF2E451C67002B53A5 /* Universal Park Pal Watch AppUITests */,
@@ -454,7 +456,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Universal Park Pal";
+				INFOPLIST_KEY_CFBundleDisplayName = "Park Pal";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app uses your location to order the locker lists by distance";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -482,7 +485,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = "Universal Park Pal";
+				INFOPLIST_KEY_CFBundleDisplayName = "Park Pal";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "The app uses your location to order the locker lists by distance";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
 				LD_RUNPATH_SEARCH_PATHS = (

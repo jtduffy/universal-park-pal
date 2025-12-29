@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ParkingLot: Codable, Identifiable {
+struct ParkingLocation: Codable, Identifiable, Hashable {
     let id: String
     let areas: [ParkingArea]
 }

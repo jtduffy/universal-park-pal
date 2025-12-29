@@ -2,21 +2,22 @@
     {
         "name": "Universal Studios Florida",
         "imageName": "globe",
+        "paidLockers": [],
         "lockers": [
             {
                 "name": "Harry Potter and the Escape from Gringotts",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.47990,
+                    "longitude": -81.46996
                 },
-                "sections": "4",
-                "lockers": 40
+                "sections": "12",
+                "lockers": 50
             },
             {
                 "name": "Men In Black Alien Attack!",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.48043,
+                    "longitude": -81.46771
                 },
                 "sections": "11",
                 "lockers": 40
@@ -24,17 +25,28 @@
                         {
                 "name": "Revenge of the Mummy",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.47655,
+                    "longitude": -81.46968
                 },
                 "sections": "12",
-                "lockers": 40
+                "lockers": 60
             }
         ]
     },
     {
         "name": "Islands of Adventure",
         "imageName": "safari",
+        "paidLockers": [
+            {
+                "name": "Port of Entry",
+                "location": {
+                    "latitude": 28.47189,
+                    "longitude": -81.46824
+                },
+                "sections": "15",
+                "lockers": 40
+            }
+        ],
         "lockers": [
             {
                 "name": "Hagrid's Magical Creatures Motorbike Adventure",
@@ -42,7 +54,7 @@
                     "latitude": 0.0,
                     "longitude": 0.0
                 },
-                "sections": "4",
+                "sections": "15",
                 "lockers": 40
             },
                         {
@@ -51,7 +63,7 @@
                     "latitude": 0.0,
                     "longitude": 0.0
                 },
-                "sections": "5",
+                "sections": "15",
                 "lockers": 40
             },
                         {
@@ -69,7 +81,7 @@
                     "latitude": 0.0,
                     "longitude": 0.0
                 },
-                "sections": "8",
+                "sections": "10",
                 "lockers": 40
                 },
             {
@@ -78,14 +90,15 @@
                     "latitude": 0.0,
                     "longitude": 0.0
                 },
-                "sections": "5",
-                "lockers": 33
+                "sections": "13",
+                "lockers": 40
             }
         ]
     },
     {
         "name": "Epic Universe",
-        "imageName": "moon.stars",
+        "imageName": "moon.dust",
+        "paidLockers": [],
         "lockers": [
             {
                 "name": "Hiccup's Wing Gliders",
@@ -107,6 +120,40 @@
             },
             {
                 "name": "Stardust Racers",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "11",
+                "lockers": 36
+            }
+        ]
+    },
+    {
+        "name": "Universal Studios Hollywood",
+        "imageName": "globe",
+        "paidLockers": [],
+        "lockers": [
+            {
+                "name": "Revenge of the Mummy - The Ride",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "8",
+                "lockers": 24
+            },
+            {
+                "name": "Harry Potter and the Forbidden Journey",
+                "location": {
+                    "latitude": 0.0,
+                    "longitude": 0.0
+                },
+                "sections": "6",
+                "lockers": 36
+            },
+            {
+                "name": "Fast & Furious: Hollywood Drift",
                 "location": {
                     "latitude": 0.0,
                     "longitude": 0.0

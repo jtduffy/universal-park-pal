@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import WatchKit
 
 class DataManagerService: ObservableObject {
     @Published var parks: [Park] = []
@@ -14,20 +15,23 @@ class DataManagerService: ObservableObject {
         // Don't block app launch
         DispatchQueue.global(qos: .userInitiated).async {
             var loadedParks: [Park] = self.loadJsonFile("parks.json") ?? []
-            let loadedParkingLots: [ParkingLot] = self.loadJsonFile("parking.json") ?? []
+            let loadedParkingLocations: [ParkingLocation] = self.loadJsonFile("parking.json") ?? []
             
-            // Manually link parking lots to each park
-            let parkingLotMap = Dictionary(uniqueKeysWithValues: loadedParkingLots.map { ($0.id, $0) })
+            // Manually link parking locations to each park
+            let parkingMap = Dictionary(uniqueKeysWithValues: loadedParkingLocations.map { ($0.id, $0) })
             for index in loadedParks.indices {
                 let parkName = loadedParks[index].name
                 
                 // Use switch to assign the correct parking lot
                 switch parkName {
-                case "Universal Studios Florida", "Islands of Adventure":
-                    loadedParks[index].parkingLot = parkingLotMap["citywalk"]
+                case "Universal Studios Florida", "Islands of Adventure", "Volcano Bay":
+                    loadedParks[index].parkingLot = parkingMap["citywalk"]
                     
                 case "Epic Universe":
-                    loadedParks[index].parkingLot = parkingLotMap["epic"]
+                    loadedParks[index].parkingLot = parkingMap["epic"]
+                    
+                case "Universal Studios Hollywood": // Added based on your JSON
+                    loadedParks[index].parkingLot = parkingMap["hollywood"]
                     
                 default:
                     break // Do nothing, it remains nil
@@ -64,5 +68,13 @@ class DataManagerService: ObservableObject {
             print(error)
             return nil
         }
+    }
+}
+
+extension ParkingLocation {
+    static var previewData: [ParkingLocation] {
+        let url = Bundle.main.url(forResource: "parking.json", withExtension: nil)!
+        let data = try! Data(contentsOf: url)
+        return try! JSONDecoder().decode([ParkingLocation].self, from: data)
     }
 }

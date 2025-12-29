@@ -10,14 +10,13 @@ import Foundation
 struct ParkingArea: Codable, Identifiable, Hashable {
     var id: String { section }
     let section: String
-    let levels: [String]
-    let rows: [String]
+    let levels: [ParkingLevel]
     
     static func == (lhs: ParkingArea, rhs: ParkingArea) -> Bool {
-        lhs.id == rhs.id
+        lhs.section == rhs.section
     }
     
     func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
+        hasher.combine(section)
     }
 }

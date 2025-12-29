@@ -4,89 +4,170 @@
 //
 //  Created by Jerry Duffy on 11/14/25.
 //
-
 import SwiftUI
 
 struct ParkingReminderView: View {
-    let parkingLot: ParkingLot
+    let parkingLot: ParkingLocation
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @AppStorage("savedParkingLotId") private var savedParkingLotId: String = ""
+    @AppStorage("savedSection") private var savedSectionName: String = ""
+    @AppStorage("savedLevel") private var savedLevelName: String = ""
+    @AppStorage("savedRow") private var savedRow: String = ""
+    
+    // Initialize with placeholders to avoid complex init logic
     @State private var selectedArea: ParkingArea
-    @State private var selectedLevel: String
+    @State private var selectedLevel: ParkingLevel
     @State private var selectedRow: String
     
-    init(parkingLot: ParkingLot) {
+    init(parkingLot: ParkingLocation) {
         self.parkingLot = parkingLot
         
-        let firstArea = parkingLot.areas.first!
-        _selectedArea = State(initialValue: firstArea)
-        _selectedLevel = State(initialValue: firstArea.levels.first ?? "")
-        _selectedRow = State(initialValue: firstArea.rows.first ?? "")
+        // 1. Determine Area
+        let sSection = UserDefaults.standard.string(forKey: "savedSection")
+        let area = parkingLot.areas.first(where: { $0.section == sSection }) ?? parkingLot.areas.first!
+        
+        // 2. Determine Level
+        let sLevel = UserDefaults.standard.string(forKey: "savedLevel")
+        let level = area.levels.first(where: { $0.level == sLevel }) ?? area.levels.first!
+        
+        // 3. Determine Row (The fix is here)
+        let savedRow = UserDefaults.standard.string(forKey: "savedRow")
+        
+        // Check if savedRow is nil OR empty. If either, use the first row of the current level.
+        let row: String
+        if let saved = savedRow, !saved.isEmpty {
+            row = saved
+        } else {
+            row = level.rows.first ?? ""
+        }
+        
+        // 4. Assign to State
+        self._selectedArea = State(initialValue: area)
+        self._selectedLevel = State(initialValue: level)
+        self._selectedRow = State(initialValue: row)
     }
     
     var body: some View {
         Form {
-            Picker("Section", selection: $selectedArea) {
-                ForEach(parkingLot.areas) { area in
-                    Text(area.section).tag(area)
+            Section {
+                // 1. Section Picker
+                Picker("Section", selection: $selectedArea) {
+                    ForEach(parkingLot.areas) { area in
+                        Text(area.section).tag(area)
+                    }
+                }
+                
+                // 2. Level Picker
+                if selectedArea.levels.count > 1 {
+                    Picker("Level", selection: $selectedLevel) {
+                        ForEach(selectedArea.levels) { levelObj in
+                            Text(levelObj.level)
+                                .minimumScaleFactor(0.8)
+                                .lineLimit(1)
+                                .tag(levelObj)
+                        }
+                    }
+                } else {
+                    levelDisplay
+                }
+                
+                // 3. Row Picker
+                Picker("Row", selection: $selectedRow) {
+                    ForEach(selectedLevel.rows, id: \.self) { row in
+                        Text(row).tag(row)
+                    }
                 }
             }
             
-            Picker("Level", selection: $selectedLevel) {
-                ForEach(selectedArea.levels, id: \.self) { level in
-                    Text(level).tag(level)
+            // --- NEW CONFIRM SECTION ---
+            Section {
+                Button(action: saveParkingSelection) {
+                    HStack {
+                        Spacer()
+                        Text("Confirm Spot")
+                        Spacer()
+                    }
                 }
+                .tint(.green)
+                .buttonStyle(.borderedProminent)
             }
+            .listRowBackground(Color.clear) // Makes the button stand out from the form
             
-            Picker("Row", selection: $selectedRow) {
-                ForEach(selectedArea.rows, id: \.self) { row in
-                    Text(row).tag(row)
+            if !savedSectionName.isEmpty {
+                Section {
+                    Button(role: .destructive, action: clearSelection) {
+                        Label("Clear Parking", systemImage: "trash")
+                    }
+                    .buttonStyle(.borderless) // Standardized to borderless red
+                    .foregroundColor(.red)
                 }
             }
         }
         .onChange(of: selectedArea) {
-            // Inside this closure, 'selectedArea' has already
-            // been updated to its new value, so we can
-            // read it directly to update the other pickers.
-            selectedLevel = selectedArea.levels.first ?? ""
-            selectedRow = selectedArea.rows.first ?? ""
+            if let firstLevel = selectedArea.levels.first {
+                selectedLevel = firstLevel
+            }
         }
-        .navigationTitle("Parking Reminder")
+        .onChange(of: selectedLevel) {
+            selectedRow = selectedLevel.rows.first ?? ""
+        }
+        .navigationTitle("Parking")
         .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    // Extracted the static level display to keep body clean
+    private var levelDisplay: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text("Level")
+                .font(.caption2)
+                .fontWeight(.medium)
+                .foregroundColor(.secondary)
+            
+            Text(selectedLevel.level)
+                .font(.body)
+                .fontWeight(.semibold)
+                .minimumScaleFactor(0.7)
+                .lineLimit(1)
+                .foregroundColor(.primary)
+        }
+        .padding(.vertical, 2)
+        .listRowBackground(RoundedRectangle(cornerRadius: 9).fill(Color(white: 0.2)))
+    }
+    
+    // --- NEW SAVE LOGIC WITH HAPTICS ---
+    private func saveParkingSelection() {
+        // Play success haptic
+        WKInterfaceDevice.current().play(.notification)
+        
+        // Commit values to AppStorage
+        savedParkingLotId = parkingLot.id
+        savedSectionName = selectedArea.section
+        savedLevelName = selectedLevel.level
+        savedRow = selectedRow
+        
+        dismiss()
+    }
+    
+    private func clearSelection() {
+        // Standardizing the haptic to match the locker reset
+        WKInterfaceDevice.current().play(.stop)
+        
+        // Clear the AppStorage
+        savedParkingLotId = ""
+        savedSectionName = ""
+        savedLevelName = ""
+        savedRow = ""
+        
+        // Standardizing the behavior: return to main menu after clearing
+        dismiss()
     }
 }
 
 #Preview {
-    // We wrap the view in a NavigationStack
-    // to see the title and layout correctly.
     NavigationStack {
-        ParkingReminderView(parkingLot: .mock)
-    }
-}
-
-extension ParkingLot {
-    static var mock: ParkingLot {
-        
-        // 1. Create mock areas
-        let area1 = ParkingArea(
-            section: "Jaws",
-            levels: ["1", "2", "3"],
-            rows: ["101", "102", "103", "104"]
-        )
-        
-        let area2 = ParkingArea(
-            section: "King Kong",
-            levels: ["4", "5"],
-            rows: ["405", "406", "407", "408", "409", "410", "411"]
-        )
-        
-        let area3 = ParkingArea(
-            section: "Spider-Man",
-            levels: ["6", "7", "8"],
-            rows: ["601", "602"]
-        )
-        
-        return ParkingLot(
-            id: "citywalk",
-            areas: [area1, area2, area3]
-        )
+        // This will show "Citywalk" data directly from your JSON file!
+        ParkingReminderView(parkingLot: ParkingLocation.previewData[0])
     }
 }
