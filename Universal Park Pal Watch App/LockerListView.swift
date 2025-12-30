@@ -9,7 +9,6 @@ import SwiftUI
 import CoreLocation
 
 struct LockerListView: View {
-    @Binding var isPresented: Bool
     let lockers: [Locker]
     let mode: LockerType
     
@@ -35,7 +34,6 @@ struct LockerListView: View {
         // 3. Use sortedLockers instead of lockers
         List(sortedLockers) { locker in
             NavigationLink(destination: LockerSelectionView(
-                isPresented: $isPresented,
                 locker: locker,
                 mode: mode
             )) {

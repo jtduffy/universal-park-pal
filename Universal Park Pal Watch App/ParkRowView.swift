@@ -9,10 +9,7 @@ import SwiftUI
 
 struct ParkRowView: View {
     let park: Park
-    @Binding var selectedParkForLockers: Park?
-    @Binding var selectedParkForPaidLockers: Park?
     
-    // 1. Persistent Storage
     @AppStorage("savedParkingLotId") private var savedParkingLotId: String = ""
     @AppStorage("savedSection") private var savedParkingSection: String = ""
     @AppStorage("savedLevel") private var savedLevel: String = "" // Added this
@@ -29,18 +26,23 @@ struct ParkRowView: View {
     
     var body: some View {
         Section(header: headerView) {
-            Button(action: {
-                selectedParkForLockers = park
-            }) {
+            NavigationLink(destination: RideListView(park: park)) {
+                ridesLabel
+            }
+            
+            // 2. Ride Lockers (Changed Button -> Link)
+            // We pass the specific list (park.lockers) and the mode (.ride)
+            NavigationLink(destination: LockerListView(lockers: park.lockers, mode: .ride)) {
                 rideLockerLabel
             }
             
-            Button(action: {
-                selectedParkForPaidLockers = park
-            }) {
+            // 3. Paid Lockers (Changed Button -> Link)
+            // We pass the specific list (park.paidLockers) and the mode (.paid)
+            NavigationLink(destination: LockerListView(lockers: park.paidLockers, mode: .paid)) {
                 paidLockerLabel
             }
             
+            // 4. Parking
             if let parkingLot = park.parkingLot {
                 NavigationLink(destination: ParkingReminderView(parkingLot: parkingLot)) {
                     parkingLabel
@@ -61,6 +63,17 @@ struct ParkRowView: View {
         .fontWeight(.bold)
         .foregroundColor(.white)
         .padding(.bottom, 3)
+    }
+    
+    private var ridesLabel: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label("Ride Wait Times", systemImage: "clock.fill")
+                .font(.caption.weight(.medium))
+                .textCase(.uppercase)
+                .kerning(1.0)
+                .foregroundColor(.red) // Universal Red
+        }
+        .padding(.vertical, 12) // Slightly taller to make it an easy tap target
     }
     
     private var rideLockerLabel: some View {

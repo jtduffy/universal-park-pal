@@ -18,7 +18,7 @@ struct MainView: View {
             List {
                 // 1. The Park Rows
                 ForEach(dataManager.parks) { park in
-                    ParkRowView(park: park, selectedParkForLockers: $selectedParkForLockers, selectedParkForPaidLockers: $selectedParkForPaidLockers)
+                    ParkRowView(park: park)
                 }
                 
                 // 2. The Reset Button (Now scrollable)
@@ -32,22 +32,12 @@ struct MainView: View {
             .navigationTitle("Universal Park Pal")
             .navigationDestination(item: $selectedParkForLockers) { park in
                 LockerListView(
-                    isPresented: Binding(
-                        get: { selectedParkForLockers != nil },
-                        set: { isPresenting in
-                            if !isPresenting { selectedParkForLockers = nil }
-                        }
-                    ),
                     lockers: park.lockers, mode: .ride
                 )
             }
             .navigationDestination(item: $selectedParkForPaidLockers) { park in
                 // This would lead to your view for paid locker locations
                 LockerListView(
-                    isPresented: Binding(
-                        get: { selectedParkForPaidLockers != nil },
-                        set: { if !$0 { selectedParkForPaidLockers = nil } }
-                    ),
                     lockers: park.paidLockers, mode: .paid
                 )
             }

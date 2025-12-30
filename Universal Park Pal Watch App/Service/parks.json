@@ -1,6 +1,7 @@
 [
     {
         "name": "Universal Studios Florida",
+        "waitTimeId": 65,
         "imageName": "globe",
         "paidLockers": [],
         "lockers": [
@@ -35,6 +36,7 @@
     },
     {
         "name": "Islands of Adventure",
+        "waitTimeId": 65,
         "imageName": "safari",
         "paidLockers": [
             {
@@ -97,6 +99,7 @@
     },
     {
         "name": "Epic Universe",
+        "waitTimeId": 334,
         "imageName": "moon.dust",
         "paidLockers": [],
         "lockers": [
@@ -131,6 +134,7 @@
     },
     {
         "name": "Universal Studios Hollywood",
+        "waitTimeId": 66,
         "imageName": "globe",
         "paidLockers": [],
         "lockers": [

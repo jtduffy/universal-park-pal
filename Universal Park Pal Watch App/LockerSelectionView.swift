@@ -8,26 +8,31 @@
 import SwiftUI
 
 struct LockerSelectionView: View {
-    @Binding var isPresented: Bool
+    // 1. DELETE: We no longer accept a binding from the parent
+    // @Binding var isPresented: Bool
+    
+    // 2. ADD: We use the Environment to dismiss ourselves
+    @Environment(\.dismiss) private var dismiss
+    
     let locker: Locker
-    let mode: LockerType // Pass the mode to determine styling and storage
+    let mode: LockerType
     
     @State private var selectedSection: String
     @State private var selectedNumber: Int
     
-    // Check if data is saved for this specific mode/locker to show the clear button
     private var isDataSaved: Bool {
         UserDefaults.standard.string(forKey: mode.nameKey) == locker.name
     }
     
-    init(isPresented: Binding<Bool>, locker: Locker, mode: LockerType) {
-        self._isPresented = isPresented
+    // 3. UPDATE INIT: Remove 'isPresented' from arguments
+    init(locker: Locker, mode: LockerType) {
+        // self._isPresented = isPresented // DELETE THIS
         self.locker = locker
         self.mode = mode
         
         let availableSections = locker.sectionList
         
-        // 1. Check for saved data using dynamic keys from the mode
+        // Check for saved data using dynamic keys from the mode
         let savedName = UserDefaults.standard.string(forKey: mode.nameKey)
         let savedSection = UserDefaults.standard.string(forKey: mode.sectionKey)
         
@@ -38,7 +43,7 @@ struct LockerSelectionView: View {
             initialSection = availableSections.first ?? "1"
         }
         
-        // 2. Determine initial number
+        // Determine initial number
         let savedNum = UserDefaults.standard.integer(forKey: mode.numberKey)
         let initialNumber = (savedName == locker.name && savedNum != 0) ? savedNum : 1
         
@@ -87,7 +92,7 @@ struct LockerSelectionView: View {
                     .frame(maxWidth: .infinity)
             }
             .buttonStyle(.borderedProminent)
-            .tint(mode.themeColor) // Uses .blue for ride, .purple for paid
+            .tint(mode.themeColor)
             
             if isDataSaved {
                 Button(role: .destructive, action: clearLockerSelection) {
@@ -110,7 +115,8 @@ struct LockerSelectionView: View {
         UserDefaults.standard.set(selectedSection, forKey: mode.sectionKey)
         UserDefaults.standard.set(selectedNumber, forKey: mode.numberKey)
         
-        isPresented = false
+        // 4. THE FIX: Pop the view off the stack
+        dismiss()
     }
     
     private func clearLockerSelection() {
@@ -121,6 +127,7 @@ struct LockerSelectionView: View {
         UserDefaults.standard.removeObject(forKey: mode.sectionKey)
         UserDefaults.standard.set(0, forKey: mode.numberKey)
         
-        isPresented = false
+        // 4. THE FIX: Pop the view off the stack
+        dismiss()
     }
 }

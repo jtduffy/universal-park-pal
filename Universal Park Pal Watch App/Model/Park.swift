@@ -9,17 +9,25 @@ import Foundation
 
 struct Park: Codable, Identifiable, Hashable {
     var id: String { name }
+    let waitTimeId: Int?
     let name: String
     let imageName: String
     let lockers: [Locker]
-    var parkingLot: ParkingLocation?
     let paidLockers: [Locker]
+    
+    var parkingLot: ParkingLocation?
+    var rides: [Ride] = []
     
     static func == (lhs: Park, rhs: Park) -> Bool {
         lhs.id == rhs.id
     }
     
     enum CodingKeys: String, CodingKey {
-        case name, lockers, paidLockers, imageName, parkingLot
+        case waitTimeId
+        case name
+        case imageName
+        case lockers
+        case paidLockers
+        case parkingLot
     }
 }
