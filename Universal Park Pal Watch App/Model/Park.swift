@@ -10,10 +10,10 @@ import Foundation
 struct Park: Codable, Identifiable, Hashable {
     var id: String { name }
     let waitTimeId: Int?
+    let allowedWaitTimeRideIds: [Int]
     let name: String
     let imageName: String
     let lockers: [Locker]
-    let paidLockers: [Locker]
     
     var parkingLot: ParkingLocation?
     var rides: [Ride] = []
@@ -24,10 +24,10 @@ struct Park: Codable, Identifiable, Hashable {
     
     enum CodingKeys: String, CodingKey {
         case waitTimeId
+        case allowedWaitTimeRideIds
         case name
         case imageName
         case lockers
-        case paidLockers
         case parkingLot
     }
 }

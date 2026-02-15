@@ -7,11 +7,10 @@
 import SwiftUI
 
 struct MainView: View {
-    @EnvironmentObject var dataManager: DataManagerService
+    @EnvironmentObject var dataManager: ParkInformationService
     
     // 1. Change this to an Optional Park object
     @State private var selectedParkForLockers: Park? = nil
-    @State private var selectedParkForPaidLockers: Park? = nil
     
     var body: some View {
         NavigationStack {
@@ -35,12 +34,6 @@ struct MainView: View {
                     lockers: park.lockers, mode: .ride
                 )
             }
-            .navigationDestination(item: $selectedParkForPaidLockers) { park in
-                // This would lead to your view for paid locker locations
-                LockerListView(
-                    lockers: park.paidLockers, mode: .paid
-                )
-            }
         }
     }
     
@@ -51,7 +44,6 @@ struct MainView: View {
         // Wipe all keys
         let keys = [
             "savedLockerName", "savedLockerSection", "savedLockerNumber",
-            "savedPaidLockerName", "savedPaidLockerSection", "savedPaidLockerNumber",
             "savedParkingLotId", "savedSection", "savedLevel", "savedRow"
         ]
         
@@ -63,5 +55,5 @@ struct MainView: View {
 
 #Preview {
     MainView()
-        .environmentObject(DataManagerService())
+        .environmentObject(ParkInformationService())
 }

@@ -8,7 +8,7 @@
 import Foundation
 import WatchKit
 
-class DataManagerService: ObservableObject {
+class ParkInformationService: ObservableObject {
     @Published var parks: [Park] = []
     
     init() {

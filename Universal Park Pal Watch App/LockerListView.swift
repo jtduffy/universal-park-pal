@@ -41,16 +41,16 @@ struct LockerListView: View {
                     HStack {
                         Text(locker.name)
                             .font(.headline)
-                            .lineLimit(1)
-                        
+                            .lineLimit(2, reservesSpace: true)
+                            
                         // Optional: Show distance if we have it
-                        if let userLoc = locationManager.userLocation {
-                            Spacer()
-                            let distance = userLoc.distance(from: CLLocation(latitude: locker.location.latitude, longitude: locker.location.longitude))
-                            Text(formatDistance(distance))
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
+//                        if let userLoc = locationManager.userLocation {
+//                            Spacer()
+//                            let distance = userLoc.distance(from: CLLocation(latitude: locker.location.latitude, longitude: locker.location.longitude))
+//                            Text(formatDistance(distance))
+//                                .font(.caption2)
+//                                .foregroundColor(.secondary)
+//                        }
                     }
                     
                     Text("\(locker.sections) Sections")
@@ -59,7 +59,7 @@ struct LockerListView: View {
                 }
             }
         }
-        .navigationTitle(mode == .ride ? "Ride Lockers" : "Paid Lockers")
+        .navigationTitle("Lockers")
         .onAppear {
             locationManager.start() // GPS ON when view appears
         }

@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct Universal_Park_Pal_Watch_AppApp: App {
-    @StateObject private var dataManager = DataManagerService()
+    @StateObject private var dataManager = ParkInformationService()
     
     var body: some Scene {
         WindowGroup {

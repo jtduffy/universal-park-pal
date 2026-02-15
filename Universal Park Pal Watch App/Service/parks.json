@@ -2,9 +2,18 @@
     {
         "name": "Universal Studios Florida",
         "waitTimeId": 65,
+        "allowedWaitTimeRideIds": [13605, 5990, 5984, 12107, 6018, 6000, 6006, 6038, 6014, 6016, 5995, 5996, 6005],
         "imageName": "globe",
-        "paidLockers": [],
         "lockers": [
+            {
+                "name": "Production Central (Paid)",
+                "location": {
+                    "latitude": 28.47518585733445,
+                    "longitude": -81.46712619086094
+                },
+                "sections": "8",
+                "lockers": 40
+            },
             {
                 "name": "Harry Potter and the Escape from Gringotts",
                 "location": {
@@ -23,7 +32,7 @@
                 "sections": "11",
                 "lockers": 40
             },
-                        {
+            {
                 "name": "Revenge of the Mummy",
                 "location": {
                     "latitude": 28.47655,
@@ -36,61 +45,87 @@
     },
     {
         "name": "Islands of Adventure",
-        "waitTimeId": 65,
+        "waitTimeId": 64,
+        "allowedWaitTimeRideIds": [5994, 5999, 6017, 5988, 6003, 5985, 6004, 5986, 6011, 5997, 5987, 6001, 5991, 6682, 5992, 6015, 5989, 5998],
         "imageName": "safari",
-        "paidLockers": [
+        "lockers": [
             {
-                "name": "Port of Entry",
+                "name": "Port of Entry (Paid)",
                 "location": {
                     "latitude": 28.47189,
                     "longitude": -81.46824
                 },
                 "sections": "15",
                 "lockers": 40
-            }
-        ],
-        "lockers": [
+            },
             {
                 "name": "Hagrid's Magical Creatures Motorbike Adventure",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.473066331877774,
+                    "longitude": -81.47285370380237
                 },
                 "sections": "15",
                 "lockers": 40
             },
-                        {
+            {
                 "name": "Harry Potter and the Forbidden Journey",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.472061831730027,
+                    "longitude": -81.47327563004292
                 },
                 "sections": "15",
                 "lockers": 40
             },
-                        {
-                "name": "Jurassic Park River Adventure",
+            {
+                "name": "Popeye & Bluto’s Bilge-Rat Barges (Paid)",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.47063097067372,
+                    "longitude": -81.47127458279492
                 },
                 "sections": "6",
                 "lockers": 12
             },
-                        {
+            {
+                "name": "Dudley Do-Right's Ripsaw Falls (Paid)",
+                "location": {
+                    "latitude": 28.46970553688525,
+                    "longitude": -81.47131387984625
+                },
+                "sections": "6",
+                "lockers": 12
+            },
+            {
+                "name": "Jurassic Park River Adventure (Paid)",
+                "location": {
+                    "latitude": 28.470603698679472,
+                    "longitude": -81.47325081085336
+                },
+                "sections": "6",
+                "lockers": 12
+            },
+            {
                 "name": "Jurassic World VelociCoaster",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.471260951913024,
+                    "longitude": -81.4724927914015
                 },
                 "sections": "10",
                 "lockers": 40
+            },
+            {
+                "name": "Jurassic Park Discovery Center (Paid)",
+                "location": {
+                    "latitude": 28.471589122468362,
+                    "longitude": -81.47245866501592
                 },
+                "sections": "10",
+                "lockers": 40
+            },
             {
                 "name": "The Incredible Hulk Coaster",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.471010431346453,
+                    "longitude": -81.46903845360629
                 },
                 "sections": "13",
                 "lockers": 40
@@ -100,14 +135,14 @@
     {
         "name": "Epic Universe",
         "waitTimeId": 334,
+        "allowedWaitTimeRideIds": [14688, 14690, 14692, 14694, 14693, 14691, 14695, 14683, 14686, 14689, 14687],
         "imageName": "moon.dust",
-        "paidLockers": [],
         "lockers": [
             {
                 "name": "Hiccup's Wing Gliders",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.44108067935389,
+                    "longitude": -81.44441452466154
                 },
                 "sections": "8",
                 "lockers": 24
@@ -115,8 +150,8 @@
             {
                 "name": "Monster's Unchained: The Frankenstein Experiment",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.440687285184875,
+                    "longitude": -81.45076961477572
                 },
                 "sections": "6",
                 "lockers": 36
@@ -124,8 +159,8 @@
             {
                 "name": "Stardust Racers",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 28.441463343737016,
+                    "longitude": -81.44660783478609
                 },
                 "sections": "11",
                 "lockers": 36
@@ -135,14 +170,14 @@
     {
         "name": "Universal Studios Hollywood",
         "waitTimeId": 66,
+        "allowedWaitTimeRideIds": [6049, 6050, 6045, 14926, 7332, 6057, 6053, 11513, 6047, 6048, 6055, 6051],
         "imageName": "globe",
-        "paidLockers": [],
         "lockers": [
             {
                 "name": "Revenge of the Mummy - The Ride",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 34.140635228621406,
+                    "longitude": -118.35667870293084
                 },
                 "sections": "8",
                 "lockers": 24
@@ -150,8 +185,8 @@
             {
                 "name": "Harry Potter and the Forbidden Journey",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 34.13813212778307,
+                    "longitude": -118.35313923935988
                 },
                 "sections": "6",
                 "lockers": 36
@@ -159,8 +194,8 @@
             {
                 "name": "Fast & Furious: Hollywood Drift",
                 "location": {
-                    "latitude": 0.0,
-                    "longitude": 0.0
+                    "latitude": 34.13935019383627,
+                    "longitude": -118.35489840723896
                 },
                 "sections": "11",
                 "lockers": 36

@@ -36,12 +36,6 @@ struct ParkRowView: View {
                 rideLockerLabel
             }
             
-            // 3. Paid Lockers (Changed Button -> Link)
-            // We pass the specific list (park.paidLockers) and the mode (.paid)
-            NavigationLink(destination: LockerListView(lockers: park.paidLockers, mode: .paid)) {
-                paidLockerLabel
-            }
-            
             // 4. Parking
             if let parkingLot = park.parkingLot {
                 NavigationLink(destination: ParkingReminderView(parkingLot: parkingLot)) {
@@ -71,18 +65,18 @@ struct ParkRowView: View {
                 .font(.caption.weight(.medium))
                 .textCase(.uppercase)
                 .kerning(1.0)
-                .foregroundColor(.red) // Universal Red
+                .foregroundColor(.blue) // Universal Red
         }
         .padding(.vertical, 12) // Slightly taller to make it an easy tap target
     }
     
     private var rideLockerLabel: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Label("Ride Lockers", systemImage: "lock.square")
+            Label("Lockers", systemImage: "lock.square")
                 .font(.caption.weight(.medium))
                 .textCase(.uppercase)
                 .kerning(1.0)
-                .foregroundColor(.blue)
+                .foregroundColor(.orange)
             
             if !savedLockerName.isEmpty && park.lockers.contains(where: { $0.name == savedLockerName }) {
                 Group {
@@ -101,38 +95,13 @@ struct ParkRowView: View {
         .padding(.vertical, 2)
     }
     
-    private var paidLockerLabel: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Label("Paid Lockers", systemImage: "dollarsign.square")
-                .font(.caption.weight(.medium))
-                .textCase(.uppercase)
-                .kerning(1.0)
-                .foregroundColor(.purple)
-            
-            if !savedPaidLockerName.isEmpty && park.paidLockers.contains(where: { $0.name == savedPaidLockerName }) {
-                Group {
-                    Text(savedPaidLockerName)
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(.primary)
-                        .lineLimit(1)
-                        .truncationMode(.tail)
-                    
-                    Text("Section: \(savedPaidLockerSection) - Number\(savedPaidLockerNumber)")
-                        .font(.system(size: 10))
-                        .foregroundColor(.secondary)
-                }
-            }
-        }
-        .padding(.vertical, 2)
-    }
-    
     private var parkingLabel: some View {
         VStack(alignment: .leading, spacing: 2) {
             Label("Parking", systemImage: "car")
                 .font(.caption.weight(.medium))
                 .textCase(.uppercase)
                 .kerning(1.0)
-                .foregroundColor(.green)
+                .foregroundColor(.yellow)
             
             // THE FIX: Check if the saved lot matches this specific park's lot
             if let lot = park.parkingLot, lot.id == savedParkingLotId, !savedParkingSection.isEmpty {

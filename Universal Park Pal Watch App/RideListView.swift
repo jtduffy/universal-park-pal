@@ -24,7 +24,7 @@ struct RideListView: View {
                     RideRowView(ride: ride)
                 }
                 
-                // REQUIRED ATTRIBUTION FOOTER
+                // Attribution Footer
                 Section {
                     VStack(alignment: .leading) {
                         Text("Wait times provided by")
@@ -47,23 +47,14 @@ struct RideListView: View {
     
     // Logic to load data (Swappable between Mock and Real)
     private func loadData() async {
-        // TEMPORARY: Simulate network delay then load Mock Data
-        try? await Task.sleep(nanoseconds: 1 * 1_000_000_000) // 1 second delay
+        do {
+            let fetchedRides = try await RideWaitTimeService.fetchRides(for: park)
+            self.rides = fetchedRides
+            self.isLoading = false
+        } catch {
+            print("Error fetching rides: \(error)")
+            self.isLoading = false
+        }
         
-        self.rides = Ride.mockData
-        self.isLoading = false
-        
-        /* // TODO: Uncomment this when on personal machine/VPN is fixed
-         if let parkId = park.waitTimeId {
-             do {
-                 let fetchedRides = try await RideWaitTimeDataService.fetchRides(for: parkId)
-                 self.rides = fetchedRides
-                 self.isLoading = false
-             } catch {
-                 print("Error fetching rides: \(error)")
-                 self.isLoading = false
-             }
-         }
-         */
     }
 }

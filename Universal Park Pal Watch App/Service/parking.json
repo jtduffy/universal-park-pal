@@ -81,6 +81,53 @@
                     {"level": "4 - Green", "rows": ["P", "Q", "R"]},
                     {"level": "5 - Brown", "rows": ["P", "Q", "R"]}
                 ]
+            },
+            {
+                "section" : "E.T.",
+                "levels": [
+                    {"level": "B1 - Pink", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "1 - Blue", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "2 - Yellow", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "3 - Red", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "4 - Green", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "5 - Brown", "rows": ["S", "T", "U", "V", "W"]},
+                    {"level": "6 - Purple", "rows": ["S", "T", "U", "V", "W"]}
+                ]
+            },
+            {
+                "section" : "Frankenstein",
+                "levels": [
+                    {"level": "1 - Blue", "rows": ["A", "B", "C"]},
+                    {"level": "2 - Yellow", "rows": ["A", "B", "C"]},
+                    {"level": "3 - Red", "rows": ["A", "B", "C"]},
+                    {"level": "4 - Green", "rows": ["A", "B", "C"]},
+                    {"level": "5 - Brown", "rows": ["A", "B", "C"]},
+                    {"level": "6 - Purple", "rows": ["A", "B", "C"]},
+                    {"level": "7 - Purple", "rows": ["A", "B", "C"]}
+                ]
+            },
+            {
+                "section" : "Jurassic Parking",
+                "levels": [
+                    {"level": "B2 - Grey", "rows": ["J", "K", "L", "M"]},
+                    {"level": "B1 - Pink", "rows": ["J", "K", "L", "M"]},
+                    {"level": "2 - Yellow", "rows": ["J", "K", "L", "M"]},
+                    {"level": "3 - Red", "rows": ["J", "K", "L", "M"]},
+                    {"level": "4 - Green", "rows": ["J", "K", "L", "M"]},
+                    {"level": "5 - Brown", "rows": ["J", "K", "L", "M"]}
+                ]
+            },
+            {
+                "section" : "King Kong",
+                "levels": [
+                    {"level": "Ground", "rows": ["D"]}
+                ]
+            },
+            {
+                "section" : "Woody Woodpecker",
+                "levels": [
+                    {"level": "Ground", "rows": ["E", "F", "G", "H"]}
+                ]
             }
         ]
     },
