@@ -12,7 +12,6 @@ build/
 *.mode2v3
 *.perspectivev3
 xcuserdata/
-*.xcworkspace
 
 # macOS specific
 .DS_Store
