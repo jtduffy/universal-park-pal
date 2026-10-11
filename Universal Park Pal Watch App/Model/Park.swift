@@ -13,6 +13,7 @@ struct Park: Codable, Identifiable, Hashable {
     let allowedWaitTimeRideIds: [Int]
     let name: String
     let imageName: String
+    let location: Location
     let lockers: [Locker]
     
     var parkingLot: ParkingLocation?
@@ -27,6 +28,7 @@ struct Park: Codable, Identifiable, Hashable {
         case allowedWaitTimeRideIds
         case name
         case imageName
+        case location
         case lockers
         case parkingLot
     }

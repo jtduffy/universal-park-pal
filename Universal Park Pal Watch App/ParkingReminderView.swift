@@ -8,125 +8,96 @@ import SwiftUI
 
 struct ParkingReminderView: View {
     let parkingLot: ParkingLocation
-    
+
     @Environment(\.dismiss) var dismiss
-    
-    @AppStorage("savedParkingLotId") private var savedParkingLotId: String = ""
-    @AppStorage("savedSection") private var savedSectionName: String = ""
-    @AppStorage("savedLevel") private var savedLevelName: String = ""
-    @AppStorage("savedRow") private var savedRow: String = ""
-    
-    // Initialize with placeholders to avoid complex init logic
-    @State private var selectedArea: ParkingArea
-    @State private var selectedLevel: ParkingLevel
-    @State private var selectedRow: String
-    
-    init(parkingLot: ParkingLocation) {
+    @EnvironmentObject var parkingStore: SavedParkingStore
+
+    // nil until the user picks a value, so the starting values never look saved
+    @State private var selectedArea: ParkingArea?
+    @State private var selectedLevel: ParkingLevel?
+    @State private var selectedRow: String?
+
+    private var savedSpot: SavedParkingSpot? {
+        parkingStore.spot(in: parkingLot)
+    }
+
+    // saved: the stored spot for this lot, if any
+    init(parkingLot: ParkingLocation, saved: SavedParkingSpot?) {
         self.parkingLot = parkingLot
-        
-        // 1. Determine Area
-        let sSection = UserDefaults.standard.string(forKey: "savedSection")
-        let area = parkingLot.areas.first(where: { $0.section == sSection }) ?? parkingLot.areas.first!
-        
-        // 2. Determine Level
-        let sLevel = UserDefaults.standard.string(forKey: "savedLevel")
-        let level = area.levels.first(where: { $0.level == sLevel }) ?? area.levels.first!
-        
-        // 3. Determine Row (The fix is here)
-        let savedRow = UserDefaults.standard.string(forKey: "savedRow")
-        
-        // Check if savedRow is nil OR empty. If either, use the first row of the current level.
-        let row: String
-        if let saved = savedRow, !saved.isEmpty {
-            row = saved
-        } else {
-            row = level.rows.first ?? ""
+
+        // Restore each saved value that's still valid, and fill in any field with only one choice
+        let area = parkingLot.areas.first(where: { $0.section == saved?.section }) ?? Self.onlyOption(parkingLot.areas)
+
+        let level = area.flatMap { area in
+            area.levels.first(where: { $0.level == saved?.level }) ?? Self.onlyOption(area.levels)
         }
-        
-        // 4. Assign to State
+
+        let row = level.flatMap { level in
+            level.rows.first(where: { $0 == saved?.row }) ?? Self.onlyOption(level.rows)
+        }
+
         self._selectedArea = State(initialValue: area)
         self._selectedLevel = State(initialValue: level)
         self._selectedRow = State(initialValue: row)
     }
-    
+
     var body: some View {
         Form {
+            // Each field appears once the one before it is picked
             Section {
-                // 1. Section Picker
-                Picker("Section", selection: $selectedArea) {
-                    ForEach(parkingLot.areas) { area in
-                        Text(area.section).tag(area)
+                SelectionRow(title: "Section", options: parkingLot.areas, selection: $selectedArea) { $0.section }
+
+                if let selectedArea {
+                    if selectedArea.levels.count > 1 {
+                        SelectionRow(title: "Level", options: selectedArea.levels, selection: $selectedLevel) { $0.level }
+                    } else if let selectedLevel {
+                        levelDisplay(selectedLevel)
                     }
                 }
-                
-                // 2. Level Picker
-                if selectedArea.levels.count > 1 {
-                    Picker("Level", selection: $selectedLevel) {
-                        ForEach(selectedArea.levels) { levelObj in
-                            Text(levelObj.level)
-                                .minimumScaleFactor(0.8)
-                                .lineLimit(1)
-                                .tag(levelObj)
-                        }
-                    }
-                } else {
-                    levelDisplay
-                }
-                
-                // 3. Row Picker
-                Picker("Row", selection: $selectedRow) {
-                    ForEach(selectedLevel.rows, id: \.self) { row in
-                        Text(row).tag(row)
-                    }
+
+                if let selectedLevel {
+                    SelectionRow(title: "Row", options: selectedLevel.rows, selection: $selectedRow) { $0 }
                 }
             }
-            
-            // --- NEW CONFIRM SECTION ---
-            Section {
-                Button(action: saveParkingSelection) {
-                    HStack {
-                        Spacer()
-                        Text("Confirm Spot")
-                        Spacer()
-                    }
-                }
-                .tint(.green)
-                .buttonStyle(.borderedProminent)
-            }
-            .listRowBackground(Color.clear) // Makes the button stand out from the form
-            
-            if !savedSectionName.isEmpty {
+
+            if savedSpot != nil {
                 Section {
                     Button(role: .destructive, action: clearSelection) {
                         Label("Clear Parking", systemImage: "trash")
                     }
-                    .buttonStyle(.borderless) // Standardized to borderless red
+                    .buttonStyle(.borderless)
                     .foregroundColor(.red)
                 }
             }
         }
+        // Each handler resets the fields that depend on it before saving, so a
+        // new section is never saved with the previous section's row.
         .onChange(of: selectedArea) {
-            if let firstLevel = selectedArea.levels.first {
-                selectedLevel = firstLevel
-            }
+            selectedLevel = selectedArea.flatMap { Self.onlyOption($0.levels) }
+            selectedRow = selectedLevel.flatMap { Self.onlyOption($0.rows) }
+            saveIfComplete()
         }
         .onChange(of: selectedLevel) {
-            selectedRow = selectedLevel.rows.first ?? ""
+            selectedRow = selectedLevel.flatMap { Self.onlyOption($0.rows) }
+            saveIfComplete()
+        }
+        .onChange(of: selectedRow) {
+            saveIfComplete()
         }
         .navigationTitle("Parking")
         .navigationBarTitleDisplayMode(.inline)
     }
-    
-    // Extracted the static level display to keep body clean
-    private var levelDisplay: some View {
+
+    // Shown instead of a picker when the section only has one level
+    private func levelDisplay(_ level: ParkingLevel) -> some View {
         VStack(alignment: .leading, spacing: 2) {
             Text("Level")
                 .font(.caption2)
                 .fontWeight(.medium)
                 .foregroundColor(.secondary)
-            
-            Text(selectedLevel.level)
-                .font(.body)
+
+            Text(level.level)
+                .font(.title3)
                 .fontWeight(.semibold)
                 .minimumScaleFactor(0.7)
                 .lineLimit(1)
@@ -135,32 +106,30 @@ struct ParkingReminderView: View {
         .padding(.vertical, 2)
         .listRowBackground(RoundedRectangle(cornerRadius: 9).fill(Color(white: 0.2)))
     }
-    
-    // --- NEW SAVE LOGIC WITH HAPTICS ---
-    private func saveParkingSelection() {
-        // Play success haptic
-        WKInterfaceDevice.current().play(.notification)
-        
-        // Commit values to AppStorage
-        savedParkingLotId = parkingLot.id
-        savedSectionName = selectedArea.section
-        savedLevelName = selectedLevel.level
-        savedRow = selectedRow
-        
-        dismiss()
+
+    private static func onlyOption<T>(_ options: [T]) -> T? {
+        options.count == 1 ? options.first : nil
     }
-    
+
+    // Saves only a full, valid spot. Nothing is saved just by opening and closing the screen.
+    private func saveIfComplete() {
+        guard let area = selectedArea,
+              let level = selectedLevel, area.levels.contains(level),
+              let row = selectedRow, level.rows.contains(row) else { return }
+
+        let alreadySaved = savedSpot.map { $0.section == area.section && $0.level == level.level && $0.row == row } ?? false
+        guard !alreadySaved else { return }
+
+        WKInterfaceDevice.current().play(.notification)
+        parkingStore.save(lot: parkingLot, section: area.section, level: level.level, row: row)
+    }
+
     private func clearSelection() {
-        // Standardizing the haptic to match the locker reset
         WKInterfaceDevice.current().play(.stop)
-        
-        // Clear the AppStorage
-        savedParkingLotId = ""
-        savedSectionName = ""
-        savedLevelName = ""
-        savedRow = ""
-        
-        // Standardizing the behavior: return to main menu after clearing
+
+        parkingStore.clear()
+
+        // Return to the lot list so the pickers don't look like a saved spot
         dismiss()
     }
 }
@@ -168,6 +137,7 @@ struct ParkingReminderView: View {
 #Preview {
     NavigationStack {
         // This will show "Citywalk" data directly from your JSON file!
-        ParkingReminderView(parkingLot: ParkingLocation.previewData[0])
+        ParkingReminderView(parkingLot: ParkingLocation.previewData[0], saved: nil)
+            .environmentObject(SavedParkingStore())
     }
 }

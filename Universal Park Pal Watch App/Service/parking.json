@@ -1,6 +1,8 @@
 [
     {
         "id": "citywalk",
+        "name": "CityWalk / Universal Studios Florida / Islands of Adventure / Volcano Bay",
+        "location": {"latitude": 28.4747, "longitude": -81.4659},
         "areas": [
             {
                 "section" : "Cat In The Hat",
@@ -69,6 +71,8 @@
     },
     {
         "id": "hollywood",
+        "name": "Universal Studios Hollywood",
+        "location": {"latitude": 34.137, "longitude": -118.355},
         "areas": [
             {
                 "section" : "Curious George",
@@ -133,6 +137,8 @@
     },
         {
         "id": "epic",
+        "name": "Epic Universe",
+        "location": {"latitude": 28.43818, "longitude": -81.44096},
         "areas": [
             {
                 "section" : "Dragon",

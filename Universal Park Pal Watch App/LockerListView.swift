@@ -9,53 +9,77 @@ import SwiftUI
 import CoreLocation
 
 struct LockerListView: View {
-    let lockers: [Locker]
-    let mode: LockerType
-    
-    // 1. Add the LocationManager
+    @EnvironmentObject var dataManager: ParkInformationService
+    @EnvironmentObject var lockerStore: SavedLockerStore
     @StateObject private var locationManager = LocationManagerService()
-    
-    // 2. Create a computed property to handle the sorting
-    var sortedLockers: [Locker] {
+
+    // Parks ordered by their closest locker, each with its lockers sorted by distance.
+    // Falls back to JSON order until we have a location fix.
+    var sortedParks: [(park: Park, lockers: [Locker])] {
         guard let userLoc = locationManager.userLocation else {
-            return lockers // Return default order if no location yet
+            return dataManager.parks.map { ($0, $0.lockers) }
         }
-        
-        return lockers.sorted { locker1, locker2 in
-            let loc1 = CLLocation(latitude: locker1.location.latitude, longitude: locker1.location.longitude)
-            let loc2 = CLLocation(latitude: locker2.location.latitude, longitude: locker2.location.longitude)
-            
-            // Compare distances
-            return userLoc.distance(from: loc1) < userLoc.distance(from: loc2)
+
+        func distance(_ locker: Locker) -> CLLocationDistance {
+            userLoc.distance(from: locker.location.clLocation)
+        }
+
+        return dataManager.parks
+            .map { park in (park, park.lockers.sorted { distance($0) < distance($1) }) }
+            .sorted { group1, group2 in
+                let nearest1 = group1.1.first.map(distance) ?? .greatestFiniteMagnitude
+                let nearest2 = group2.1.first.map(distance) ?? .greatestFiniteMagnitude
+                return nearest1 < nearest2
+            }
+    }
+
+    // Saved lockers matched back to their park and locker data
+    var savedEntries: [(park: Park, locker: Locker, saved: SavedLocker)] {
+        lockerStore.sortedLockers.compactMap { saved in
+            guard let park = dataManager.parks.first(where: { $0.name == saved.parkName }),
+                  let locker = park.lockers.first(where: { $0.name == saved.lockerName }) else {
+                return nil
+            }
+            return (park, locker, saved)
         }
     }
-    
+
     var body: some View {
-        // 3. Use sortedLockers instead of lockers
-        List(sortedLockers) { locker in
-            NavigationLink(destination: LockerSelectionView(
-                locker: locker,
-                mode: mode
-            )) {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack {
-                        Text(locker.name)
-                            .font(.headline)
-                            .lineLimit(2, reservesSpace: true)
-                            
-                        // Optional: Show distance if we have it
-//                        if let userLoc = locationManager.userLocation {
-//                            Spacer()
-//                            let distance = userLoc.distance(from: CLLocation(latitude: locker.location.latitude, longitude: locker.location.longitude))
-//                            Text(formatDistance(distance))
-//                                .font(.caption2)
-//                                .foregroundColor(.secondary)
-//                        }
+        List {
+            if !savedEntries.isEmpty {
+                Section("My Lockers") {
+                    ForEach(savedEntries, id: \.saved.id) { entry in
+                        NavigationLink(destination: LockerSelectionView(park: entry.park, locker: entry.locker, saved: entry.saved)) {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(entry.locker.name)
+                                    .font(.headline)
+                                    .lineLimit(2)
+
+                                savedLabel(entry.saved)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                WKInterfaceDevice.current().play(.stop)
+                                lockerStore.clear(park: entry.park, locker: entry.locker)
+                            } label: {
+                                Label("Clear", systemImage: "trash")
+                            }
+                        }
                     }
-                    
-                    Text("\(locker.sections) Sections")
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
+                }
+            }
+
+            ForEach(sortedParks, id: \.park.id) { group in
+                Section {
+                    ForEach(group.lockers) { locker in
+                        NavigationLink(destination: LockerSelectionView(park: group.park, locker: locker, saved: lockerStore.saved(park: group.park, locker: locker))) {
+                            lockerRow(park: group.park, locker: locker)
+                        }
+                    }
+                } header: {
+                    ParkSectionHeader(park: group.park, color: .orange)
                 }
             }
         }
@@ -67,11 +91,42 @@ struct LockerListView: View {
             locationManager.stop()  // GPS OFF when view vanishes
         }
     }
-    
+
+    private func lockerRow(park: Park, locker: Locker) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(locker.name)
+                .font(.headline)
+                .lineLimit(2)
+
+            if let saved = lockerStore.saved(park: park, locker: locker) {
+                savedLabel(saved)
+            } else if let userLoc = locationManager.userLocation {
+                Text(formatDistance(userLoc.distance(from: locker.location.clLocation)))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func savedLabel(_ saved: SavedLocker) -> some View {
+        Label("Section \(saved.section) · #\(saved.number)", systemImage: "checkmark.circle.fill")
+            .font(.caption2)
+            .foregroundColor(.green)
+    }
+
     // Helper to make meters look like "0.2 mi" or "300 ft"
     private func formatDistance(_ meters: Double) -> String {
         let measurement = Measurement(value: meters, unit: UnitLength.meters)
         // Convert to user's preferred locale (miles or km)
         return measurement.formatted(.measurement(width: .abbreviated, usage: .road))
+    }
+}
+
+#Preview {
+    NavigationStack {
+        LockerListView()
+            .environmentObject(ParkInformationService())
+            .environmentObject(SavedLockerStore())
     }
 }

@@ -6,8 +6,13 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct Location: Codable, Hashable {
     let latitude: Double
     let longitude: Double
- }
+    
+    var clLocation: CLLocation {
+        CLLocation(latitude: latitude, longitude: longitude)
+    }
+}

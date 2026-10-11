@@ -4,6 +4,7 @@
         "waitTimeId": 65,
         "allowedWaitTimeRideIds": [13605, 5990, 5984, 12107, 6018, 6000, 6006, 6038, 6014, 6016, 5995, 5996, 6005],
         "imageName": "globe",
+        "location": {"latitude": 28.47835, "longitude": -81.46835},
         "lockers": [
             {
                 "name": "Production Central (Paid)",
@@ -48,6 +49,7 @@
         "waitTimeId": 64,
         "allowedWaitTimeRideIds": [5994, 5999, 6017, 5988, 6003, 5985, 6004, 5986, 6011, 5997, 5987, 6001, 5991, 6682, 5992, 6015, 5989, 5998],
         "imageName": "safari",
+        "location": {"latitude": 28.47176, "longitude": -81.47075},
         "lockers": [
             {
                 "name": "Port of Entry (Paid)",
@@ -137,6 +139,7 @@
         "waitTimeId": 334,
         "allowedWaitTimeRideIds": [14688, 14690, 14692, 14694, 14693, 14691, 14695, 14683, 14686, 14689, 14687],
         "imageName": "moon.dust",
+        "location": {"latitude": 28.44046, "longitude": -81.44745},
         "lockers": [
             {
                 "name": "Hiccup's Wing Gliders",
@@ -172,6 +175,7 @@
         "waitTimeId": 66,
         "allowedWaitTimeRideIds": [6049, 6050, 6045, 14926, 7332, 6057, 6053, 11513, 6047, 6048, 6055, 6051],
         "imageName": "globe",
+        "location": {"latitude": 34.13937, "longitude": -118.35491},
         "lockers": [
             {
                 "name": "Revenge of the Mummy - The Ride",

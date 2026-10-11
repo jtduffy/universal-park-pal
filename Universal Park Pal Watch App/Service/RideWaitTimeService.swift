@@ -15,7 +15,9 @@ class RideWaitTimeService {
     }()
     
     static func fetchRides(for park: Park) async throws -> [Ride] {
-        let parkId: Int = park.waitTimeId!
+        guard let parkId = park.waitTimeId else {
+            throw URLError(.badURL)
+        }
         let allowedWaitTimeRideIds = park.allowedWaitTimeRideIds
         let urlString = "https://queue-times.com/parks/\(parkId)/queue_times.json"
         guard let url = URL(string: urlString) else {

@@ -10,6 +10,7 @@ import WatchKit
 
 class ParkInformationService: ObservableObject {
     @Published var parks: [Park] = []
+    @Published var parkingLocations: [ParkingLocation] = []
     
     init() {
         // Don't block app launch
@@ -41,6 +42,7 @@ class ParkInformationService: ObservableObject {
             // thread to update our @Published properties.
             DispatchQueue.main.async {
                 self.parks = loadedParks
+                self.parkingLocations = loadedParkingLocations
             }
         }
     }

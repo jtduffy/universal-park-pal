@@ -7,53 +7,61 @@
 import SwiftUI
 
 struct MainView: View {
-    @EnvironmentObject var dataManager: ParkInformationService
-    
-    // 1. Change this to an Optional Park object
-    @State private var selectedParkForLockers: Park? = nil
-    
+    @EnvironmentObject var lockerStore: SavedLockerStore
+    @EnvironmentObject var parkingStore: SavedParkingStore
+
     var body: some View {
         NavigationStack {
             List {
-                // 1. The Park Rows
-                ForEach(dataManager.parks) { park in
-                    ParkRowView(park: park)
+                NavigationLink(destination: RideListView()) {
+                    menuLabel("Wait Times", systemImage: "clock.fill", color: .blue)
                 }
-                
-                // 2. The Reset Button (Now scrollable)
-                Section {
-                    Button(role: .destructive, action: globalReset) {
-                        Label("Clear All Data", systemImage: "arrow.counterclockwise.circle")
-                    }
-                    .foregroundColor(.red)
+
+                NavigationLink(destination: LockerListView()) {
+                    menuLabel("Lockers", systemImage: "lock.square", color: .orange, detail: lockerDetail)
+                }
+
+                NavigationLink(destination: ParkingLotListView()) {
+                    menuLabel("Car Locator", systemImage: "car.fill", color: .yellow,
+                              detail: parkingStore.spot.map { "\($0.section) · L\($0.level) · Row \($0.row)" })
                 }
             }
             .navigationTitle("Universal Park Pal")
-            .navigationDestination(item: $selectedParkForLockers) { park in
-                LockerListView(
-                    lockers: park.lockers, mode: .ride
-                )
-            }
         }
     }
+
+    // One saved locker shows its spot, several show a count
+    private var lockerDetail: String? {
+        let saved = lockerStore.sortedLockers
+        guard let first = saved.first else { return nil }
+        
+        if saved.count == 1 {
+            return "Sec \(first.section) · #\(first.number) · \(first.lockerName)"
+        }
+        return "\(saved.count) lockers saved"
+    }
     
-    private func globalReset() {
-        // Play a distinct haptic
-        WKInterfaceDevice.current().play(.stop)
-        
-        // Wipe all keys
-        let keys = [
-            "savedLockerName", "savedLockerSection", "savedLockerNumber",
-            "savedParkingLotId", "savedSection", "savedLevel", "savedRow"
-        ]
-        
-        keys.forEach { UserDefaults.standard.removeObject(forKey: $0) }
-        
-        // Force UI refresh (AppStorage handles this automatically once keys change)
+    private func menuLabel(_ title: String, systemImage: String, color: Color, detail: String? = nil) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Label(title, systemImage: systemImage)
+                .font(.headline)
+                .foregroundColor(color)
+
+            if let detail {
+                Text(detail)
+                    .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
+            }
+        }
+        .padding(.vertical, 8)
     }
 }
 
 #Preview {
     MainView()
         .environmentObject(ParkInformationService())
+        .environmentObject(SavedLockerStore())
+        .environmentObject(SavedParkingStore())
 }
